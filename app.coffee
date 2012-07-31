@@ -18,8 +18,19 @@ app.factory "pubnub", ($rootScope) ->
 
     return pubnub
 
-app.controller "MainController", ($scope, pubnub) ->
-    $scope.rollChannel = ""
+app.controller "MainController", ($scope, $location, pubnub) ->
+    $scope.$watch ->
+        $location.search().room ? ""
+    , (newValue) ->
+        console.log newValue
+        $scope.rollChannel = newValue
+
+    $scope.$watch "rollChannel", (newValue) ->
+        if newValue? and newValue != ""
+            $location.search("room", newValue)
+        else
+            $location.search("room", null)
+
     $scope.rollName = ""
     $scope.rollModifier = ""
     $scope.rolls = []
@@ -52,6 +63,9 @@ app.controller "MainController", ($scope, pubnub) ->
                 message: roll
 
             $scope.rollModifier = ""
+
+    $scope.clear = ->
+        $scope.rolls = []
 
     $scope.calculateResult = (roll) ->
         return roll.posValue - roll.negValue + roll.modifier

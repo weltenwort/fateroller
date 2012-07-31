@@ -27,8 +27,21 @@
     return pubnub;
   });
 
-  app.controller("MainController", function($scope, pubnub) {
-    $scope.rollChannel = "";
+  app.controller("MainController", function($scope, $location, pubnub) {
+    $scope.$watch(function() {
+      var _ref;
+      return (_ref = $location.search().room) != null ? _ref : "";
+    }, function(newValue) {
+      console.log(newValue);
+      return $scope.rollChannel = newValue;
+    });
+    $scope.$watch("rollChannel", function(newValue) {
+      if ((newValue != null) && newValue !== "") {
+        return $location.search("room", newValue);
+      } else {
+        return $location.search("room", null);
+      }
+    });
     $scope.rollName = "";
     $scope.rollModifier = "";
     $scope.rolls = [];
@@ -60,6 +73,9 @@
         });
         return $scope.rollModifier = "";
       }
+    };
+    $scope.clear = function() {
+      return $scope.rolls = [];
     };
     return $scope.calculateResult = function(roll) {
       return roll.posValue - roll.negValue + roll.modifier;
