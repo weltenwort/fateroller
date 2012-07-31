@@ -32,7 +32,6 @@
       var _ref;
       return (_ref = $location.search().room) != null ? _ref : "";
     }, function(newValue) {
-      console.log(newValue);
       return $scope.rollChannel = newValue;
     });
     $scope.$watch("rollChannel", function(newValue) {

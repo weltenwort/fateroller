@@ -22,7 +22,6 @@ app.controller "MainController", ($scope, $location, pubnub) ->
     $scope.$watch ->
         $location.search().room ? ""
     , (newValue) ->
-        console.log newValue
         $scope.rollChannel = newValue
 
     $scope.$watch "rollChannel", (newValue) ->
